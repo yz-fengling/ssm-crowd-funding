@@ -1,18 +1,22 @@
 package com.yz.yx.bean;
 
-import javax.xml.crypto.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 public class Post {
     private int postId;
     private String postName;
     private double postMoney;
-    private Data postDay;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date postDay;
     private double postInMoney;
     private int postPeople;
     private int postStatus;
     private String postImg;
     private User user;
-    private Data postData;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date postDate;
 
     public Post() {
     }
@@ -29,11 +33,11 @@ public class Post {
                 ", postStatus=" + postStatus +
                 ", postImg='" + postImg + '\'' +
                 ", user=" + user +
-                ", postData=" + postData +
+                ", postDate=" + postDate +
                 '}';
     }
 
-    public Post(int postId, String postName, double postMoney, Data postDay, double postInMoney, int postPeople, int postStatus, String postImg, User user, Data postData) {
+    public Post(int postId, String postName, double postMoney, Date postDay, double postInMoney, int postPeople, int postStatus, String postImg, User user, Date postDate) {
         this.postId = postId;
         this.postName = postName;
         this.postMoney = postMoney;
@@ -43,8 +47,26 @@ public class Post {
         this.postStatus = postStatus;
         this.postImg = postImg;
         this.user = user;
-        this.postData = postData;
+        this.postDate = postDate;
     }
+
+    public Date getPostDate() {
+        return postDate;
+    }
+
+    public void setPostDate(Date postDate) {
+        this.postDate = postDate;
+    }
+
+    public Date getPostDay() {
+        return postDay;
+    }
+
+    public void setPostDay(Date postDay) {
+        this.postDay = postDay;
+    }
+
+
 
     public void setPostId(int postId) {
         this.postId = postId;
@@ -58,9 +80,6 @@ public class Post {
         this.postMoney = postMoney;
     }
 
-    public void setPostDay(Data postDay) {
-        this.postDay = postDay;
-    }
 
     public void setPostInMoney(double postInMoney) {
         this.postInMoney = postInMoney;
@@ -82,9 +101,6 @@ public class Post {
         this.user = user;
     }
 
-    public void setPostData(Data postData) {
-        this.postData = postData;
-    }
 
     public int getPostId() {
         return postId;
@@ -98,9 +114,6 @@ public class Post {
         return postMoney;
     }
 
-    public Data getPostDay() {
-        return postDay;
-    }
 
     public double getPostInMoney() {
         return postInMoney;
@@ -122,7 +135,4 @@ public class Post {
         return user;
     }
 
-    public Data getPostData() {
-        return postData;
-    }
 }

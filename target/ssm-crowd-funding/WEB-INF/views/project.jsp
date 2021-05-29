@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="UTF-8">
   <head>
@@ -73,7 +74,7 @@
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li>
-                                    <a rel="nofollow" href="index.html"><i class="glyphicon glyphicon-home"></i> 众筹首页</a>
+                                    <a rel="nofollow" href="crowd_funding"><i class="glyphicon glyphicon-home"></i> 众筹首页</a>
                                 </li>
                                 <li >
                                     <a rel="nofollow" href="projects.html"><i class="glyphicon glyphicon-th-large"></i> 众筹项目</a>
@@ -92,7 +93,7 @@
                 <div class="col-md-12 column">
                     <div class="jumbotron nofollow" style="    padding-top: 10px;">
                         <h3>
-                            酷驰触控龙头，智享厨房黑科技
+                            ${post.postName}
                         </h3>
                         <div style="float:left;width:70%;">
                             智能时代，酷驰触控厨房龙头，让煮妇解放双手，触发更多烹饪灵感，让美味信手拈来。
@@ -108,27 +109,42 @@
                 <div class="col-md-12 column">
                     <div class="row clearfix">
                         <div class="col-md-8 column">
-                            <img alt="140x140" width="740" src="static/img/product_detail_head.jpg" />
+                            <img alt="140x140" width="740" src="${post.postImg}" />
                             
                            
                         </div>
                         <div class="col-md-4 column">
                             <div class="panel panel-default" style="border-radius: 0px;">
-                                <div class="panel-heading" style="background-color: #fff;border-color: #fff;">
-                                    <span class="label label-success"><i class="glyphicon glyphicon-tag"></i> 众筹中</span>
-                                </div>
+                                <c:if test="${post.postStatus==0}">
+                                    <div class="panel-heading" style="background-color: #fff;border-color: #fff;">
+                                        <span class="label label-success"><i class="glyphicon glyphicon-tag"></i>众筹中</span>
+                                    </div>
+                                </c:if>
+                                <c:if test="${post.postStatus!=0}">
+                                    <div class="panel-heading" style="background-color: #fff;border-color: #fff;">
+                                        <span class="label label-success"><i class="glyphicon glyphicon-tag"></i>众筹完</span>
+                                    </div>
+                                </c:if>
                                 <div class="panel-body">
                                     <h3 >
-                                        已筹资金：￥50000.00
+                                        已筹资金：￥ ${post.postInMoney}
                                     </h3>
-                                    <p><span>目标金额 ： 1000.00</span><span style="float:right;">达成 ： 60%</span></p>
+
+                                    <p><span>目标金额 ：${post.postMoney}</span>
+                                        <c:if test="${percentage>=100}">
+                                            <span style="float:right;">已达成</span>
+                                        </c:if>
+                                        <c:if test="${percentage<100}">
+                                            <span style="float:right;">达成 ：${percentage}%</span>
+                                        </c:if>
+                                    </p>
                                     <div class="progress" style="height:10px; margin-bottom: 5px;">
-                                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100" style="width: ${percentage}%;"></div>
                                     </div>
-                                    <p>剩余 15 天</p>
+                                    <p>${day}</p>
                                     <div>
-                                     <p><span>已有629人支持该项目</p>
-                                     <button type="button" class="btn  btn-warning btn-lg btn-block" data-toggle="modal" data-target="#myModal">立即支持</button>
+                                     <p><span>已有${post.postPeople}人支持该项目</p>
+                                     <button id="btn_support" type="button" class="btn  btn-warning btn-lg btn-block" data-toggle="modal" data-target="#myModal" >立即支持</button>
                                     </div>
                                 </div>
                                 </div>
@@ -179,11 +195,37 @@
         <div class="modal-content" data-spy="scroll" data-target="#myScrollspy">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">选择支持项</h4>
+            <h4 class="modal-title" id="myModalLabel">请选择支持的金额</h4>
           </div>
           <div class="modal-body">
-
-</div>
+              <form class="form-inline">
+                  <div class="form-group">
+                      <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-primary active">
+                              <input value="1" type="checkbox" checked> 1元
+                          </label>
+                          <label class="btn btn-primary">
+                              <input value="5" type="checkbox"> 5元
+                          </label>
+                          <label class="btn btn-primary">
+                              <input value="10" type="checkbox"> 10元
+                          </label>
+                          <label class="btn btn-primary">
+                              <input value="20" type="checkbox"> 20元
+                          </label>
+                          <label class="btn btn-primary">
+                              <input value="50" type="checkbox"> 50元
+                          </label>
+                          <label class="btn btn-primary">
+                              <input value="100" type="checkbox"> 100元
+                          </label>
+                      </div>
+                      其它金额：
+                      <input type="email" class="form-control" id="exampleInputEmail3" placeholder="请输入支持的金额">
+                  </div>
+                  <button type="submit" class="btn btn-default">支持一下</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -199,5 +241,9 @@
         window.location.href = 'project.html';
     });
 	</script>
+
+  <script type="application/javascript">
+
+  </script>
   </body>
 </html>
