@@ -195,36 +195,54 @@
         <div class="modal-content" data-spy="scroll" data-target="#myScrollspy">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">请选择支持的金额</h4>
+            <h4 class="modal-title" id="myModalLabel">选择支持项</h4>
           </div>
           <div class="modal-body">
-              <form class="form-inline">
-                  <div class="form-group">
-                      <div class="btn-group" data-toggle="buttons">
-                          <label class="btn btn-primary active">
-                              <input value="1" type="checkbox" checked> 1元
-                          </label>
-                          <label class="btn btn-primary">
-                              <input value="5" type="checkbox"> 5元
-                          </label>
-                          <label class="btn btn-primary">
-                              <input value="10" type="checkbox"> 10元
-                          </label>
-                          <label class="btn btn-primary">
-                              <input value="20" type="checkbox"> 20元
-                          </label>
-                          <label class="btn btn-primary">
-                              <input value="50" type="checkbox"> 50元
-                          </label>
-                          <label class="btn btn-primary">
-                              <input value="100" type="checkbox"> 100元
-                          </label>
-                      </div>
-                      其它金额：
-                      <input type="email" class="form-control" id="exampleInputEmail3" placeholder="请输入支持的金额">
+              <div class="row clearfix">
+                  <div class="col-sm-3 col-md-3 column" id="myScrollspy">
+                      <ul class="nav nav-tabs nav-stacked">
+                          <li class="active"><a href="#section-1">￥1.00</a></li>
+                          <li class="active"><a href="#section-2">￥149.00</a></li>
+                          <li class="active"><a href="#section-3">￥249.00</a></li>
+                          <li class="active"><a href="#section-4">￥549.00</a></li>
+                          <li class="active"><a href="#section-5">￥1999.00</a></li>
+                          <li class="active"><a href="#section-6">￥其它金額</a></li>
+                      </ul>
                   </div>
-                  <button type="submit" class="btn btn-default">支持一下</button>
-              </form>
+                  <div id="navList" class="col-sm-9 col-md-9 column" style="height:400px;overflow-y:auto;">
+                      <h2 id="section-1" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥1.00</span><span style="font-size:12px;margin-left:60px;">无限额，${post.postPeople}位支持者</span></h2>
+                      <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='pay?money=1&pid=${post.postId}'">支持</button>
+                      <br><br>
+                      <hr>
+                      <h2 id="section-2" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥149.00</span><span style="font-size:12px;margin-left:60px;">无限额，${post.postPeople}位支持者</span></h2>
+                      <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='pay?money=149&pid=${post.postId}'">支持</button>
+                      <br><br>
+                      <hr>
+                      <h2 id="section-3" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥249.00</span><span style="font-size:12px;margin-left:60px;">无限额，${post.postPeople}位支持者</span></h2>
+                      <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='pay?money=249&pid=${post.postId}'">支持</button>
+                      <br><br>
+                      <hr>
+                      <h2 id="section-4" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥549.00</span><span style="font-size:12px;margin-left:60px;">无限额，${post.postPeople}位支持者</span></h2>
+                      <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='pay?money=549&pid=${post.postId}'">支持</button>
+                      <br><br>
+                      <hr>
+                      <h2 id="section-5" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥1999.00</span><span style="font-size:12px;margin-left:60px;">无限额，${post.postPeople}位支持者</span></h2>
+                      <button type="button" class="btn  btn-warning btn-lg " onclick="window.location.href='pay?money=1999&pid=${post.postId}'">支持</button>
+                      <hr>
+                      <h2 id="section-6" style="border-bottom:1px dashed #ddd;" ><span style="font-size:20px;font-weight:bold;">￥其它金額</span><span style="font-size:12px;margin-left:60px;">无限额，${post.postPeople}位支持者</span></h2>
+                      <form class="form-inline" action="pay" method="post">
+                          <input type="hidden" id="post_id" name="postId" value="${post.postId}" />
+                          <div class="form-group">
+                              <label class="sr-only">请输入金额</label>
+                              <input type="text" name="money" class="form-control" id="input_money" placeholder="请输入金额">
+                              <span></span>
+                          </div>
+                          <button type="submit" id="btn_money" class="btn btn-default btn-warning">支持</button>
+                      </form>
+                      <br><br>
+                  </div>
+              </div>
+          </div>
             </div>
           </div>
         </div>
@@ -243,7 +261,40 @@
 	</script>
 
   <script type="application/javascript">
+        $("#input_money").change(function () {
+            var moneyName=$("#input_money").val();
+            var regName=/^[0-9]*$/;
+            if(!regName.test(moneyName)){
+                show_validate_msg("#input_money","error","请输入数字");
+                return false;
+            }else {
+                show_validate_msg("#input_money","success","");
+                return true;
+            }
+        })
 
+      function show_validate_msg(ele,status,msg) {
+          //清除当前元素的校验状态
+          $(ele).parent().removeClass("has-success has-error");
+          $(ele).next("span").text("");
+          if("success"==status){
+              $(ele).parent().addClass("has-success");
+              $(ele).next("span").text(msg)
+          }else if("error"==status){
+              $(ele).parent().addClass("has-error");
+              $(ele).next("span").text(msg);
+          }
+      }
+
+      $("#btn_money").click(function () {
+          var moneyName=$("#input_money").val();
+          var regName=/^[0-9]*$/;
+          if(!regName.test(moneyName)){
+              alert("请输入合法的金额");
+              return false;
+          }
+          return true;
+      });
   </script>
   </body>
 </html>

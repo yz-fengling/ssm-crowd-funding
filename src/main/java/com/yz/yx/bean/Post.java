@@ -18,6 +18,9 @@ public class Post {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date postDate;
 
+    private double money;
+
+
     public Post() {
     }
 
@@ -48,6 +51,14 @@ public class Post {
         this.postImg = postImg;
         this.user = user;
         this.postDate = postDate;
+    }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        this.money = money;
     }
 
     public Date getPostDate() {

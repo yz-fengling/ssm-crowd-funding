@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,18 @@ public class PostController {
         request.setAttribute("post",post);
         request.setAttribute("day",day);
         return "project";
+    }
+
+    @GetMapping("/pay")
+    public String pay(@Param("money")double money, @Param("pid")Integer pid) {
+        System.out.println(money+"========="+pid);
+        return "pay-step";
+    }
+
+    @PostMapping("/pay")
+    public String pay(@Param("Post")Post post){
+        System.out.println(post.getPostId()+"===="+post.getMoney());
+        return "pay-step";
     }
 
 }
